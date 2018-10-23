@@ -1,6 +1,7 @@
-package com.bottega.withdraw;
+package com.bottega.withdraw.domain;
 
 import com.bottega.DomainEvent;
+import com.bottega.withdraw.domain.produces.MoneyWasWithdrawn;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,5 +35,8 @@ public class CreditCard {
 
 	public List<DomainEvent> getEvents() {
 		return events;
+	}
+
+	public void refund(BigDecimal amount) {
 	}
 }

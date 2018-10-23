@@ -1,4 +1,4 @@
-package com.bottega.withdraw;
+package com.bottega.withdraw.domain.produces;
 
 import com.bottega.DomainEvent;
 import lombok.Value;

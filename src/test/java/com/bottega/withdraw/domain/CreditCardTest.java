@@ -1,13 +1,12 @@
-package com.bottega.withdraw;
+package com.bottega.withdraw.domain;
 
-import org.assertj.core.api.Assertions;
+import com.bottega.withdraw.domain.produces.MoneyWasWithdrawn;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import static java.math.BigDecimal.ONE;
-import static java.math.BigDecimal.TEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

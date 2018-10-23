@@ -1,4 +1,4 @@
-package com.bottega.withdraw;
+package com.bottega.withdraw.domain;
 
 import java.util.UUID;
 
