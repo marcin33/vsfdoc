@@ -1,6 +1,6 @@
-package com.bottega.vsfdoc.draft.domain;
+package com.bottega.vsfdoc.draft.write.domain;
 
-import com.bottega.vsfdoc.draft.domain.ports.SystemType;
+import com.bottega.vsfdoc.draft.write.domain.ports.SystemType;
 
 import java.time.LocalDate;
 import java.util.Arrays;

@@ -1,8 +1,8 @@
-package com.bottega.vsfdoc.draft.domain;
+package com.bottega.vsfdoc.draft.write.domain;
 
-import com.bottega.vsfdoc.draft.domain.ports.CurrentUserPort;
-import com.bottega.vsfdoc.draft.domain.ports.SequencePort;
-import com.bottega.vsfdoc.draft.domain.ports.SystemConfigPort;
+import com.bottega.vsfdoc.draft.write.domain.ports.CurrentUserPort;
+import com.bottega.vsfdoc.draft.write.domain.ports.SequencePort;
+import com.bottega.vsfdoc.draft.write.domain.ports.SystemConfigPort;
 import lombok.AllArgsConstructor;
 
 import java.time.Clock;

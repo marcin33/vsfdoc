@@ -1,4 +1,4 @@
-package com.bottega.vsfdoc.draft.domain.consumes;
+package com.bottega.vsfdoc.draft.write.domain.consumes;
 
 import com.bottega.vsfdoc.shared.QDocId;
 import lombok.Data;

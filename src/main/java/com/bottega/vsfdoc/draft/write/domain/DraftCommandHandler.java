@@ -1,8 +1,8 @@
-package com.bottega.vsfdoc.draft.domain;
+package com.bottega.vsfdoc.draft.write.domain;
 
-import com.bottega.vsfdoc.draft.domain.consumes.DoCreateDraft;
-import com.bottega.vsfdoc.draft.domain.consumes.DoSendToVerification;
-import com.bottega.vsfdoc.draft.domain.consumes.DoUpdateContent;
+import com.bottega.vsfdoc.draft.write.domain.consumes.DoCreateDraft;
+import com.bottega.vsfdoc.draft.write.domain.consumes.DoSendToVerification;
+import com.bottega.vsfdoc.draft.write.domain.consumes.DoUpdateContent;
 
 public class DraftCommandHandler {
 

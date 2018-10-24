@@ -1,7 +1,7 @@
-package com.bottega.vsfdoc.draft.domain;
+package com.bottega.vsfdoc.draft.write.domain;
 
-import com.bottega.vsfdoc.draft.domain.produces.QDocWasCreated;
-import com.bottega.vsfdoc.draft.domain.produces.QDocWasSendToVerification;
+import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasCreated;
+import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasSendToVerification;
 import com.bottega.vsfdoc.shared.BaseAggregate;
 import com.bottega.vsfdoc.shared.QDocId;
 import com.bottega.vsfdoc.shared.VerifierId;

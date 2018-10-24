@@ -1,4 +1,4 @@
-package com.bottega.vsfdoc.draft.domain.consumes;
+package com.bottega.vsfdoc.draft.write.domain.consumes;
 
 import lombok.Data;
 

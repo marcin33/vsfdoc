@@ -1,4 +1,4 @@
-package com.bottega.vsfdoc.draft.domain;
+package com.bottega.vsfdoc.draft.write.domain;
 
 public enum QDocState {
 

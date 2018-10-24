@@ -1,4 +1,4 @@
-package com.bottega.vsfdoc.draft.domain.produces;
+package com.bottega.vsfdoc.draft.write.domain.produces;
 
 import com.bottega.vsfdoc.shared.DomainEvent;
 
