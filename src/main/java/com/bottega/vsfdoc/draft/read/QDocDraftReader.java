@@ -9,7 +9,10 @@ public class QDocDraftReader {
 
 	private QDocDraftReadModelDao dao;
 
+
 	QDocDraftDetailsReadModel findDetails(QDocId id) {
-		return dao.getOne(id);
+		QDocDraftDetailsReadModel one = dao.getOne(id);
+
+		return one;
 	}
 }
