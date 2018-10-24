@@ -1,6 +1,6 @@
 package com.bottega.withdraw.domain;
 
-import com.bottega.DomainEvent;
+import com.bottega.vsfdoc.shared.DomainEvent;
 import com.bottega.withdraw.domain.produces.MoneyWasWithdrawn;
 
 import java.math.BigDecimal;

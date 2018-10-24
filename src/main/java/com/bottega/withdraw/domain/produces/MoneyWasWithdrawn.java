@@ -1,6 +1,6 @@
 package com.bottega.withdraw.domain.produces;
 
-import com.bottega.DomainEvent;
+import com.bottega.vsfdoc.shared.DomainEvent;
 import lombok.Value;
 
 import java.math.BigDecimal;
