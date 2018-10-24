@@ -1,4 +1,9 @@
 package com.bottega.vsfdoc.draft.domain;
 
-public class QDocDraft {
+class QDocDraft {
+	private QDocNumber number;
+
+	QDocDraft(QDocNumber number) {
+		this.number = number;
+	}
 }

@@ -6,10 +6,12 @@ import com.bottega.vsfdoc.draft.domain.consumes.DoUpdateContent;
 public class DraftCommandHandler {
 
 
+	private QDocNumberGenerator numberGenerator;
+
 	public void handle(DoCreateDraft command) {
 
-		//numberGenerator.generate();
-		//new QDocDraft(number);
+		QDocNumber number = numberGenerator.generate();
+		new QDocDraft(number);
 
 	}
 
