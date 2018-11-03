@@ -11,22 +11,15 @@ public class DraftCommandHandler {
 	private QDocDraftRepo repo;
 
 	public void handle(DoCreateDraft command) {
-
-		QDocNumber number = numberGenerator.generate();
-		repo.save(new QDocDraft(number));
-
+		repo.apply(command.getQDocId(), qDoc -> qDoc.create(numberGenerator.generate()));
 	}
 
 	public void handle(DoUpdateContent command) {
-		QDocDraft draft = repo.load(command.getQDocId());
-		draft.updateContent(command.getContent());
-		repo.save(draft);
+		repo.apply(command.getQDocId(), qDoc -> qDoc.updateContent(command.getContent()));
 	}
 
 	public void handle(DoSendToVerification command) {
-		QDocDraft draft = repo.load(command.getQDocId());
-		draft.sendToVerification();
-		repo.save(draft);
+		repo.apply(command.getQDocId(), QDocDraft::sendToVerification);
 	}
 
 }

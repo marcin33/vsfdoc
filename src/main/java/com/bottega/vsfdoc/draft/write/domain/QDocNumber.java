@@ -28,6 +28,10 @@ class QDocNumber {
 		this.value = Arrays.asList(number.split("/"));
 	}
 
+	QDocNumber(String number) {
+		this.value = Arrays.asList(number.split("/"));
+	}
+
 	String getValue() {
 		return String.join("/", value);
 	}
