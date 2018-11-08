@@ -1,6 +1,6 @@
 package com.bottega.vsfdoc.draft.read;
 
-import com.bottega.vsfdoc.shared.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

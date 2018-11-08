@@ -3,7 +3,7 @@ package com.bottega.vsfdoc.draft.write.domain;
 import com.bottega.vsfdoc.draft.write.domain.ports.QDocDraftDaoPort;
 import com.bottega.vsfdoc.draft.write.domain.ports.QDocDraftRecord;
 import com.bottega.vsfdoc.shared.DomainEvent;
-import com.bottega.vsfdoc.shared.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import org.springframework.context.ApplicationEventPublisher;
 
 import javax.transaction.Transactional;

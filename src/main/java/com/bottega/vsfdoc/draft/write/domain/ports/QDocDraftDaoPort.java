@@ -1,6 +1,6 @@
 package com.bottega.vsfdoc.draft.write.domain.ports;
 
-import com.bottega.vsfdoc.shared.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.QDocId;
 
 import java.util.Optional;
 

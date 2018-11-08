@@ -1,6 +1,6 @@
 package com.bottega.vsfdoc.draft.write.domain.consumes;
 
-import com.bottega.vsfdoc.shared.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import lombok.Data;
 
 @Data

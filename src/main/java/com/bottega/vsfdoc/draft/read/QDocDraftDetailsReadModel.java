@@ -1,7 +1,7 @@
 package com.bottega.vsfdoc.draft.read;
 
 import com.bottega.vsfdoc.draft.write.domain.QDocState;
-import com.bottega.vsfdoc.shared.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import lombok.Data;
 
 import javax.persistence.*;
