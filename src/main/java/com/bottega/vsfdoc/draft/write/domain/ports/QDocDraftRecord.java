@@ -1,21 +1,18 @@
 package com.bottega.vsfdoc.draft.write.domain.ports;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.bottega.vsfdoc.draft.write.domain.produces.QDocContentWasUpdated;
+import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasAssignToVerifier;
+import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasCreated;
+import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasSendToVerification;
+import com.bottega.vsfdoc.shared.DomainEvent;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import com.bottega.vsfdoc.draft.write.domain.QDocState;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocContentWasUpdated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasCreated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasSendToVerification;
-import com.bottega.vsfdoc.shared.DomainEvent;
-
-import lombok.Data;
-import lombok.Getter;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -23,6 +20,8 @@ public class QDocDraftRecord {
 
 	@Id
 	private UUID id;
+	private UUID ownerId;
+	private String type;
 	private String content;
 	private String number;
 	private String state;
@@ -41,14 +40,16 @@ public class QDocDraftRecord {
 	public void apply(DomainEvent event) {
 		if (event instanceof QDocWasCreated) {
 			this.number = ((QDocWasCreated) event).getQDocNumber();
-		}
-		else if (event instanceof QDocContentWasUpdated) {
+			this.state = ((QDocWasCreated) event).getState();
+			this.ownerId = ((QDocWasCreated) event).getOwnerId().value();
+			this.type = ((QDocWasCreated) event).getType();
+		} else if (event instanceof QDocContentWasUpdated) {
 			this.content = ((QDocContentWasUpdated) event).getContent();
-		}
-		else if (event instanceof QDocWasSendToVerification) {
-			this.state = QDocState.IN_VERIFICATION.name();
-		}
-		else {
+		} else if (event instanceof QDocWasAssignToVerifier) {
+			this.verifierId = ((QDocWasAssignToVerifier) event).getVerifierId().value();
+		} else if (event instanceof QDocWasSendToVerification) {
+
+		} else {
 			throw new IllegalStateException("Event not implemented: " + event);
 		}
 	}
@@ -67,5 +68,13 @@ public class QDocDraftRecord {
 
 	public Optional<UUID> getVerifierId() {
 		return Optional.ofNullable(verifierId);
+	}
+
+	public Optional<UUID> getOwnerId() {
+		return Optional.ofNullable(ownerId);
+	}
+
+	public Optional<String> getType() {
+		return Optional.ofNullable(type);
 	}
 }

@@ -1,22 +1,16 @@
 package com.bottega.vsfdoc.draft.write.domain.consumes;
 
-import com.bottega.vsfdoc.draft.write.domain.QDocType;
-import com.bottega.vsfdoc.shared.identifiers.OwnerId;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.VerifierId;
 import lombok.NonNull;
 import lombok.Value;
 
-
 @Value
-public class DoCreateDraft {
+public class DoAssignToVerifier {
 
 	@NonNull
 	private final QDocId qDocId;
 
 	@NonNull
-	private final String qDocType;
-
-	@NonNull
-	private final OwnerId ownerId;
-
+	private final VerifierId verifierId;
 }

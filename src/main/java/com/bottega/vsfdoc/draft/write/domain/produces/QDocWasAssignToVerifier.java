@@ -1,23 +1,21 @@
 package com.bottega.vsfdoc.draft.write.domain.produces;
 
 import com.bottega.vsfdoc.shared.DomainEvent;
-import com.bottega.vsfdoc.shared.identifiers.OwnerId;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
+import com.bottega.vsfdoc.shared.identifiers.VerifierId;
 import lombok.Value;
 
 import java.util.UUID;
 
 @Value
-public class QDocWasCreated implements DomainEvent {
+public class QDocWasAssignToVerifier implements DomainEvent {
 
 	private final QDocId qDocId;
-	private final String qDocNumber;
-	private final OwnerId ownerId;
-	private final String type;
-	private final String state;
+	private final VerifierId verifierId;
 
 	@Override
 	public UUID getId() {
 		return qDocId.value();
 	}
+
 }

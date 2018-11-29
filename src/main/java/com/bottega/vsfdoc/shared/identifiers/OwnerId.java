@@ -11,15 +11,15 @@ import static java.util.Objects.requireNonNull;
 
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class VerifierId {
+public class OwnerId {
 
 	@NonNull
 	private final UUID value;
 
-	public static VerifierId of(UUID id) {
+	public static OwnerId of(UUID id) {
 		requireNonNull(id, "id is required");
 
-		return new VerifierId(id);
+		return new OwnerId(id);
 	}
 
 	public UUID value() {
@@ -29,5 +29,9 @@ public class VerifierId {
 	@Override
 	public String toString() {
 		return value.toString();
+	}
+
+	public boolean isSame(VerifierId verifierId) {
+		return verifierId != null && value.equals(verifierId.value());
 	}
 }

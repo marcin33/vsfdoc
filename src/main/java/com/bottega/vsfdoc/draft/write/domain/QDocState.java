@@ -1,6 +1,6 @@
 package com.bottega.vsfdoc.draft.write.domain;
 
-public enum QDocState {
+enum QDocState {
 
 	NEW, IN_VERIFICATION, VERIFIED, PUBLISHED;
 

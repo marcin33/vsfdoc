@@ -1,6 +1,5 @@
 package com.bottega.vsfdoc.draft.read;
 
-import com.bottega.vsfdoc.draft.write.domain.QDocState;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import lombok.Data;
 
@@ -16,7 +15,7 @@ public class QDocDraftDetailsReadModel {
 
 	@Id
 	private QDocId qDocId;
-	private QDocState state;
+	private String state;
 	private String content;
 	private String number;
 	@ManyToOne

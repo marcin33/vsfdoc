@@ -11,7 +11,9 @@ public class DraftCommandHandler {
 	private QDocDraftRepo repo;
 
 	public void handle(DoCreateDraft command) {
-		repo.apply(command.getQDocId(), qDoc -> qDoc.create(numberGenerator.generate()));
+		repo.apply(command.getQDocId(), qDoc -> qDoc.create(numberGenerator.generate(),
+				command.getOwnerId(),
+				QDocType.valueOf(command.getQDocType())));
 	}
 
 	public void handle(DoUpdateContent command) {
