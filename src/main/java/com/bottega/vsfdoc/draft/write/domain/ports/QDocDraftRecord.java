@@ -1,10 +1,8 @@
 package com.bottega.vsfdoc.draft.write.domain.ports;
 
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocContentWasUpdated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasAssignToVerifier;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasCreated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasSendToVerification;
+import com.bottega.vsfdoc.draft.write.domain.produces.*;
 import com.bottega.vsfdoc.shared.DomainEvent;
+import com.bottega.vsfdoc.shared.identifiers.DepartmentId;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -13,6 +11,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -47,6 +46,11 @@ public class QDocDraftRecord {
 			this.content = ((QDocContentWasUpdated) event).getContent();
 		} else if (event instanceof QDocWasAssignToVerifier) {
 			this.verifierId = ((QDocWasAssignToVerifier) event).getVerifierId().value();
+		} else if (event instanceof QDocDepartmentsWereSet) {
+			this.departments = ((QDocDepartmentsWereSet) event).getDepartmentIds()
+					.stream()
+					.map(DepartmentId::value)
+					.collect(Collectors.toList());
 		} else if (event instanceof QDocWasSendToVerification) {
 
 		} else {

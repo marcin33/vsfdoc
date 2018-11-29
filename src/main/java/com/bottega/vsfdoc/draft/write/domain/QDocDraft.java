@@ -1,14 +1,14 @@
 package com.bottega.vsfdoc.draft.write.domain;
 
 import com.bottega.vsfdoc.draft.write.domain.ports.QDocDraftRecord;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocContentWasUpdated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasAssignToVerifier;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasCreated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasSendToVerification;
+import com.bottega.vsfdoc.draft.write.domain.produces.*;
 import com.bottega.vsfdoc.shared.DomainEvent;
+import com.bottega.vsfdoc.shared.identifiers.DepartmentId;
 import com.bottega.vsfdoc.shared.identifiers.OwnerId;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import com.bottega.vsfdoc.shared.identifiers.VerifierId;
+
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -44,7 +44,7 @@ class QDocDraft {
 	DomainEvent sendToVerification() {
 		if (number != null && state.isNew() && verifierId != null && isNotBlank(content)
 				&& departments.isNotEmpty()) {
-			return new QDocWasSendToVerification(qDocId);
+			return new QDocWasSendToVerification(qDocId, QDocState.IN_VERIFICATION.name());
 		}
 		throw new IllegalStateException("Cannot send to verification");
 	}
@@ -65,5 +65,12 @@ class QDocDraft {
 			return new QDocWasAssignToVerifier(qDocId, verifierId);
 		}
 		throw new IllegalStateException("Cannot assign to verifier");
+	}
+
+	DomainEvent setDepartments(List<DepartmentId> departmentIds) {
+		if (departmentIds != null && state.isNew()) {
+			return new QDocDepartmentsWereSet(qDocId, departmentIds);
+		}
+		throw new IllegalStateException("Cannot set departments");
 	}
 }

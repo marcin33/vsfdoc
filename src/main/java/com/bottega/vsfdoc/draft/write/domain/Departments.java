@@ -16,7 +16,7 @@ class Departments {
 	Departments(List<UUID> departments) {
 		Optional.ofNullable(departments)
 			.ifPresent(departmentUuids -> departmentUuids
-				.forEach(uuid -> this.departmentIds.add(new DepartmentId(uuid))));
+				.forEach(uuid -> this.departmentIds.add(DepartmentId.of(uuid))));
 	}
 
 	boolean isNotEmpty() {

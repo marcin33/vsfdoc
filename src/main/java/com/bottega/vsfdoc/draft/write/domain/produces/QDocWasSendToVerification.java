@@ -10,6 +10,7 @@ import java.util.UUID;
 public class QDocWasSendToVerification implements DomainEvent {
 
     private final QDocId qDocId;
+    private final String state;
 
     @Override
     public UUID getId() {

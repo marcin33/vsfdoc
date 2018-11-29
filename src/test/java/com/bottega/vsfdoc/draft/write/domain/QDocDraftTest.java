@@ -1,16 +1,16 @@
 package com.bottega.vsfdoc.draft.write.domain;
 
 import com.bottega.vsfdoc.draft.write.domain.ports.QDocDraftRecord;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocContentWasUpdated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasAssignToVerifier;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasCreated;
-import com.bottega.vsfdoc.draft.write.domain.produces.QDocWasSendToVerification;
+import com.bottega.vsfdoc.draft.write.domain.produces.*;
 import com.bottega.vsfdoc.shared.DomainEvent;
+import com.bottega.vsfdoc.shared.identifiers.DepartmentId;
 import com.bottega.vsfdoc.shared.identifiers.OwnerId;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import com.bottega.vsfdoc.shared.identifiers.VerifierId;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -23,6 +23,7 @@ public class QDocDraftTest {
 	private static final String Q_DOC_NUMBER_STR = "DEMO/ISO/123/11/2018/AUDIT";
 	private static final QDocNumber Q_DOC_NUMBER = new QDocNumber(Q_DOC_NUMBER_STR);
 	private static final OwnerId OWNER_ID = OwnerId.of(UUID.randomUUID());
+	private static final List<DepartmentId> DEPARTMENT_IDS = Arrays.asList(DepartmentId.of(UUID.randomUUID()), DepartmentId.of(UUID.randomUUID()));
 
 	private static final QDocWasCreated Q_DOC_WAS_CREATED = new QDocWasCreated(Q_DOC_ID, Q_DOC_NUMBER_STR, OWNER_ID, QDocType.BASIC.name(), QDocState.NEW.name());
 
@@ -64,19 +65,32 @@ public class QDocDraftTest {
 		then(event).isEqualTo(new QDocWasAssignToVerifier(Q_DOC_ID, verifierId));
 	}
 
-	//@Test
+	@Test
+	public void shouldSetDepartments() {
+		// given
+		QDocDraft qDocDraft = create(Q_DOC_WAS_CREATED);
+
+		// when
+		DomainEvent event = qDocDraft.setDepartments(DEPARTMENT_IDS);
+
+		// then
+		then(event).isEqualTo(new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS));
+	}
+
+	@Test
 	public void shouldSendToVerification() {
 		// given
 		QDocDraft qDocDraft = create(
 				Q_DOC_WAS_CREATED,
 				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
-				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())));
+				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
+				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS));
 
 		// when
 		DomainEvent event = qDocDraft.sendToVerification();
 
 		// then
-		then(event).isEqualTo(new QDocWasSendToVerification(Q_DOC_ID));
+		then(event).isEqualTo(new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
 	}
 
 	private QDocDraft create(DomainEvent... events) {
