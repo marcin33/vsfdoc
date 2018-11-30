@@ -7,4 +7,12 @@ enum QDocState {
 	public boolean isNew() {
 		return this.equals(NEW);
 	}
+
+	public boolean isInVerification() {
+		return this.equals(IN_VERIFICATION);
+	}
+
+	public boolean isVerified() {
+		return this.equals(VERIFIED);
+	}
 }

@@ -27,6 +27,7 @@ public class QDocDraftRecord {
 	private UUID verifierId;
 	@OneToMany
 	private List<UUID> departments;
+	private String declineNote;
 
 	QDocDraftRecord() {
 		// JPA only
@@ -52,7 +53,14 @@ public class QDocDraftRecord {
 					.map(DepartmentId::value)
 					.collect(Collectors.toList());
 		} else if (event instanceof QDocWasSendToVerification) {
-
+			this.state = ((QDocWasSendToVerification) event).getState();
+		} else if (event instanceof QDocWasVerified) {
+			this.state = ((QDocWasVerified) event).getState();
+		} else if (event instanceof QDocWasDecline) {
+			this.state = ((QDocWasDecline) event).getState();
+			this.declineNote = ((QDocWasDecline) event).getDeclineNote();
+		} else if (event instanceof QDocWasPublished) {
+			this.state = ((QDocWasPublished) event).getState();
 		} else {
 			throw new IllegalStateException("Event not implemented: " + event);
 		}

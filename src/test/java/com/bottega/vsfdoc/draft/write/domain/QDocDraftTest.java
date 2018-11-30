@@ -25,7 +25,7 @@ public class QDocDraftTest {
 	private static final OwnerId OWNER_ID = OwnerId.of(UUID.randomUUID());
 	private static final List<DepartmentId> DEPARTMENT_IDS = Arrays.asList(DepartmentId.of(UUID.randomUUID()), DepartmentId.of(UUID.randomUUID()));
 
-	private static final QDocWasCreated Q_DOC_WAS_CREATED = new QDocWasCreated(Q_DOC_ID, Q_DOC_NUMBER_STR, OWNER_ID, QDocType.BASIC.name(), QDocState.NEW.name());
+	private static final QDocWasCreated QDocWasCreated = new QDocWasCreated(Q_DOC_ID, Q_DOC_NUMBER_STR, OWNER_ID, QDocType.BASIC.name(), QDocState.NEW.name());
 
 	@Test
 	public void shouldCreateDraft() {
@@ -36,13 +36,13 @@ public class QDocDraftTest {
 		DomainEvent event = qDocDraft.create(Q_DOC_NUMBER, OWNER_ID, QDocType.BASIC);
 
 		// then
-		then(event).isEqualTo(Q_DOC_WAS_CREATED);
+		then(event).isEqualTo(QDocWasCreated);
 	}
 
 	@Test
 	public void shouldUpdateContent() {
 		// given
-		QDocDraft qDocDraft = create(Q_DOC_WAS_CREATED);
+		QDocDraft qDocDraft = create(QDocWasCreated);
 		String newContent = "new content";
 
 		// when
@@ -55,7 +55,7 @@ public class QDocDraftTest {
 	@Test
 	public void shouldAssignToVerifier() {
 		// given
-		QDocDraft qDocDraft = create(Q_DOC_WAS_CREATED);
+		QDocDraft qDocDraft = create(QDocWasCreated);
 		VerifierId verifierId = VerifierId.of(UUID.randomUUID());
 
 		// when
@@ -68,7 +68,7 @@ public class QDocDraftTest {
 	@Test
 	public void shouldSetDepartments() {
 		// given
-		QDocDraft qDocDraft = create(Q_DOC_WAS_CREATED);
+		QDocDraft qDocDraft = create(QDocWasCreated);
 
 		// when
 		DomainEvent event = qDocDraft.setDepartments(DEPARTMENT_IDS);
@@ -81,7 +81,7 @@ public class QDocDraftTest {
 	public void shouldSendToVerification() {
 		// given
 		QDocDraft qDocDraft = create(
-				Q_DOC_WAS_CREATED,
+				QDocWasCreated,
 				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
 				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS));
@@ -91,6 +91,59 @@ public class QDocDraftTest {
 
 		// then
 		then(event).isEqualTo(new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
+	}
+
+	@Test
+	public void shouldVerify() {
+		// given
+		QDocDraft qDocDraft = create(
+				QDocWasCreated,
+				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
+				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
+				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
+				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
+
+		// when
+		DomainEvent event = qDocDraft.verify();
+
+		// then
+		then(event).isEqualTo(new QDocWasVerified(Q_DOC_ID, QDocState.VERIFIED.name()));
+	}
+
+	@Test
+	public void shouldDecline() {
+		// given
+		QDocDraft qDocDraft = create(
+				QDocWasCreated,
+				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
+				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
+				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
+				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
+		String declineNote = "decline note";
+
+		// when
+		DomainEvent event = qDocDraft.decline(declineNote);
+
+		// then
+		then(event).isEqualTo(new QDocWasDecline(Q_DOC_ID, declineNote, QDocState.NEW.name()));
+	}
+
+	@Test
+	public void shouldPublish() {
+		// given
+		QDocDraft qDocDraft = create(
+				QDocWasCreated,
+				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
+				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
+				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
+				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()),
+				new QDocWasVerified(Q_DOC_ID, QDocState.VERIFIED.name()));
+
+		// when
+		DomainEvent event = qDocDraft.publish();
+
+		// then
+		then(event).isEqualTo(new QDocWasPublished(Q_DOC_ID, QDocState.PUBLISHED.name()));
 	}
 
 	private QDocDraft create(DomainEvent... events) {
