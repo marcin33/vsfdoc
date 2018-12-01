@@ -44,9 +44,10 @@ public class QDocDraftTest {
 		// given
 		QDocDraft qDocDraft = create(QDocWasCreated);
 		String newContent = "new content";
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.updateContent(newContent);
+		DomainEvent event = qDocDraft.updateContent(validator, newContent);
 
 		// then
 		then(event).isEqualTo(new QDocContentWasUpdated(Q_DOC_ID, newContent));
@@ -57,9 +58,10 @@ public class QDocDraftTest {
 		// given
 		QDocDraft qDocDraft = create(QDocWasCreated);
 		VerifierId verifierId = VerifierId.of(UUID.randomUUID());
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.assignToVerifier(verifierId);
+		DomainEvent event = qDocDraft.assignToVerifier(validator, verifierId);
 
 		// then
 		then(event).isEqualTo(new QDocWasAssignToVerifier(Q_DOC_ID, verifierId));
@@ -69,9 +71,10 @@ public class QDocDraftTest {
 	public void shouldSetDepartments() {
 		// given
 		QDocDraft qDocDraft = create(QDocWasCreated);
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.setDepartments(DEPARTMENT_IDS);
+		DomainEvent event = qDocDraft.setDepartments(validator, DEPARTMENT_IDS);
 
 		// then
 		then(event).isEqualTo(new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS));
@@ -85,9 +88,10 @@ public class QDocDraftTest {
 				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
 				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS));
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.sendToVerification();
+		DomainEvent event = qDocDraft.sendToVerification(validator);
 
 		// then
 		then(event).isEqualTo(new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
@@ -102,9 +106,10 @@ public class QDocDraftTest {
 				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
 				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.verify();
+		DomainEvent event = qDocDraft.verify(validator);
 
 		// then
 		then(event).isEqualTo(new QDocWasVerified(Q_DOC_ID, QDocState.VERIFIED.name()));
@@ -120,9 +125,10 @@ public class QDocDraftTest {
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
 				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
 		String declineNote = "decline note";
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.decline(declineNote);
+		DomainEvent event = qDocDraft.decline(validator, declineNote);
 
 		// then
 		then(event).isEqualTo(new QDocWasDecline(Q_DOC_ID, declineNote, QDocState.NEW.name()));
@@ -138,9 +144,10 @@ public class QDocDraftTest {
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
 				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()),
 				new QDocWasVerified(Q_DOC_ID, QDocState.VERIFIED.name()));
+		QDocValidator validator = new QDocValidator(qDocDraft);
 
 		// when
-		DomainEvent event = qDocDraft.publish();
+		DomainEvent event = qDocDraft.publish(validator);
 
 		// then
 		then(event).isEqualTo(new QDocWasPublished(Q_DOC_ID, QDocState.PUBLISHED.name()));
@@ -153,6 +160,5 @@ public class QDocDraftTest {
 
 		return new QDocDraft(record);
 	}
-
 
 }

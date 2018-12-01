@@ -7,12 +7,13 @@ import com.bottega.vsfdoc.shared.identifiers.DepartmentId;
 import com.bottega.vsfdoc.shared.identifiers.OwnerId;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import com.bottega.vsfdoc.shared.identifiers.VerifierId;
+import lombok.Getter;
 
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+@Getter
 class QDocDraft {
 
 	private final QDocId qDocId;
@@ -46,55 +47,59 @@ class QDocDraft {
 		return new QDocWasCreated(qDocId, number.getValue(), ownerId, type.name(), QDocState.NEW.name());
 	}
 
-	DomainEvent updateContent(String content) {
-		if (state.isNew() && isNotBlank(content)) {
-			return new QDocContentWasUpdated(qDocId, content);
-		}
-		throw new IllegalStateException("Cannot update content");
+	DomainEvent updateContent(QDocValidator validator, String content) {
+		validator.state(QDocState.NEW)
+				.notBlankContent(content)
+				.validate();
+
+		return new QDocContentWasUpdated(qDocId, content);
 	}
 
-	DomainEvent assignToVerifier(VerifierId verifierId) {
-		if (state.isNew() && !ownerId.isSame(verifierId)) {
-			return new QDocWasAssignToVerifier(qDocId, verifierId);
-		}
-		throw new IllegalStateException("Cannot assign to verifier");
+	DomainEvent assignToVerifier(QDocValidator validator, VerifierId verifierId) {
+		validator.state(QDocState.NEW)
+				.ownerIsNotVerifier(verifierId)
+				.validate();
+
+		return new QDocWasAssignToVerifier(qDocId, verifierId);
 	}
 
-	DomainEvent setDepartments(List<DepartmentId> departmentIds) {
-		requireNonNull(departmentIds, "departments are required");
+	DomainEvent setDepartments(QDocValidator validator, List<DepartmentId> departmentIds) {
+		validator.state(QDocState.NEW)
+				.departmentIdsNotEmpty(departmentIds)
+				.validate();
 
-		if (!departmentIds.isEmpty() && state.isNew()) {
-			return new QDocDepartmentsWereSet(qDocId, departmentIds);
-		}
-		throw new IllegalStateException("Cannot set departments");
+		return new QDocDepartmentsWereSet(qDocId, departmentIds);
 	}
 
-	DomainEvent sendToVerification() {
-		if (state.isNew() && verifierId != null && isNotBlank(content)
-				&& departments.isNotEmpty()) {
-			return new QDocWasSendToVerification(qDocId, QDocState.IN_VERIFICATION.name());
-		}
-		throw new IllegalStateException("Cannot send to verification");
+	DomainEvent sendToVerification(QDocValidator validator) {
+		validator.state(QDocState.NEW)
+				.notBlankContent(content)
+				.departmentsNotEmpty()
+				.verifierNotEmpty()
+				.validate();
+
+		return new QDocWasSendToVerification(qDocId, QDocState.IN_VERIFICATION.name());
 	}
 
-	DomainEvent verify() {
-		if (state.isInVerification()) {
-			return new QDocWasVerified(qDocId, QDocState.VERIFIED.name());
-		}
-		throw new IllegalStateException("Cannot verify");
+	DomainEvent verify(QDocValidator validator) {
+		validator.state(QDocState.IN_VERIFICATION)
+				.validate();
+
+		return new QDocWasVerified(qDocId, QDocState.VERIFIED.name());
 	}
 
-	DomainEvent decline(String declineNote) {
-		if (state.isInVerification() && isNotBlank(declineNote)) {
-			return new QDocWasDecline(qDocId, declineNote, QDocState.NEW.name());
-		}
-		throw new IllegalStateException("Cannot decline");
+	DomainEvent decline(QDocValidator validator, String declineNote) {
+		validator.state(QDocState.IN_VERIFICATION)
+				.notBlankDeclineNote(declineNote)
+				.validate();
+
+		return new QDocWasDecline(qDocId, declineNote, QDocState.NEW.name());
 	}
 
-	DomainEvent publish() {
-		if (state.isVerified()) {
-			return new QDocWasPublished(qDocId, QDocState.PUBLISHED.name());
-		}
-		throw new IllegalStateException("Cannot publish");
+	DomainEvent publish(QDocValidator validator) {
+		validator.state(QDocState.VERIFIED)
+				.validate();
+
+		return new QDocWasPublished(qDocId, QDocState.PUBLISHED.name());
 	}
 }

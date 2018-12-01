@@ -22,4 +22,8 @@ class Departments {
 	boolean isNotEmpty() {
 		return !departmentIds.isEmpty();
 	}
+
+	boolean isEmpty() {
+		return departmentIds.isEmpty();
+	}
 }
