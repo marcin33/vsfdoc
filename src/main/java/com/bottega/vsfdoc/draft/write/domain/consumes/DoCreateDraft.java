@@ -3,11 +3,10 @@ package com.bottega.vsfdoc.draft.write.domain.consumes;
 import com.bottega.vsfdoc.shared.command.Command;
 import com.bottega.vsfdoc.shared.identifiers.OwnerId;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
 
-
-@Value
+@Data
 public class DoCreateDraft implements Command {
 
 	@NonNull
