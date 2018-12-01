@@ -1,4 +1,4 @@
-package com.bottega.vsfdoc.shared;
+package com.bottega.vsfdoc.shared.validation;
 
 import java.util.LinkedList;
 import java.util.List;

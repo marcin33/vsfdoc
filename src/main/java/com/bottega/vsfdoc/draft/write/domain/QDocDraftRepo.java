@@ -4,20 +4,26 @@ import com.bottega.vsfdoc.draft.write.domain.ports.QDocDraftDaoPort;
 import com.bottega.vsfdoc.draft.write.domain.ports.QDocDraftRecord;
 import com.bottega.vsfdoc.shared.DomainEvent;
 import com.bottega.vsfdoc.shared.identifiers.QDocId;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 
 import javax.transaction.Transactional;
 import java.util.function.Function;
 
-class QDocDraftRepo {
+import static java.util.Objects.requireNonNull;
 
-	private QDocDraftDaoPort dao;
-	private ApplicationEventPublisher publisher;
+@RequiredArgsConstructor
+public class QDocDraftRepo {
+
+	private final QDocDraftDaoPort dao;
+	private final ApplicationEventPublisher publisher;
 
 	@Transactional
 	void apply(QDocId id, Function<QDocDraft, DomainEvent> consumer) {
+		requireNonNull(id, "id is required");
+		requireNonNull(consumer, "consumer is required");
 
-		QDocDraftRecord record = dao.findById(id).orElse(new QDocDraftRecord(id.value()));
+		QDocDraftRecord record = dao.findById(id.value()).orElse(new QDocDraftRecord(id.value()));
 
 		QDocDraft qDocDraft = new QDocDraft(record);
 

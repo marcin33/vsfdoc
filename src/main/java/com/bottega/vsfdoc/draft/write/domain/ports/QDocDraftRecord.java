@@ -5,9 +5,7 @@ import com.bottega.vsfdoc.shared.DomainEvent;
 import com.bottega.vsfdoc.shared.identifiers.DepartmentId;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +23,15 @@ public class QDocDraftRecord {
 	private String number;
 	private String state;
 	private UUID verifierId;
-	@OneToMany
+
+	@ElementCollection
+	@CollectionTable(
+			name="DEPARTMENT",
+			joinColumns=@JoinColumn(name="QDOC_ID")
+	)
+	@Column(name = "DEPARTMENT_ID")
 	private List<UUID> departments;
+
 	private String declineNote;
 
 	QDocDraftRecord() {

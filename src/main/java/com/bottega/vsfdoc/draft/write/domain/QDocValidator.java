@@ -1,21 +1,19 @@
 package com.bottega.vsfdoc.draft.write.domain;
 
-import com.bottega.vsfdoc.shared.ValidationViolations;
 import com.bottega.vsfdoc.shared.identifiers.DepartmentId;
 import com.bottega.vsfdoc.shared.identifiers.VerifierId;
 import com.bottega.vsfdoc.shared.validation.ValidationException;
+import com.bottega.vsfdoc.shared.validation.ValidationViolations;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-@RequiredArgsConstructor
 class QDocValidator {
-
-	private final QDocDraft qDocDraft;
 
 	private List<QDocChecker> checkers = new ArrayList<>();
 
@@ -54,7 +52,9 @@ class QDocValidator {
 		return this;
 	}
 
-	void validate() {
+	void validate(QDocDraft qDocDraft) {
+		requireNonNull(qDocDraft, "qDocDraft is required");
+
 		ValidationViolations violations = new ValidationViolations();
 
 		checkers.forEach(c -> c.check(violations, qDocDraft));
@@ -63,7 +63,6 @@ class QDocValidator {
 			throw new ValidationException(qDocDraft.getQDocId().value(), violations);
 		}
 	}
-
 
 	private interface QDocChecker {
 
@@ -135,7 +134,7 @@ class QDocValidator {
 		}
 	}
 
-	private class VerifierNotEmpty implements QDocChecker {
+	private static class VerifierNotEmpty implements QDocChecker {
 
 		@Override
 		public void check(ValidationViolations violations, QDocDraft qDocDraft) {
@@ -146,7 +145,7 @@ class QDocValidator {
 	}
 
 	@RequiredArgsConstructor
-	private class NotBlankDeclineNote implements QDocChecker {
+	private static class NotBlankDeclineNote implements QDocChecker {
 
 		@NonNull
 		private final String declineNote;

@@ -4,9 +4,11 @@ import com.bottega.vsfdoc.shared.command.Command;
 import com.bottega.vsfdoc.shared.command.CommandBus;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import static java.util.Objects.requireNonNull;
 
+@Component
 @RequiredArgsConstructor
 public class SimpleCommandBus implements CommandBus {
 

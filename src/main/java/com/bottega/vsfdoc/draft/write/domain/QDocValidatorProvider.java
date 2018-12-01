@@ -1,9 +1,9 @@
 package com.bottega.vsfdoc.draft.write.domain;
 
-class QDocValidatorProvider {
+public class QDocValidatorProvider {
 
-	QDocValidator get(QDocDraft qDocDraft) {
-		return new QDocValidator(qDocDraft);
+	QDocValidator get() {
+		return new QDocValidator();
 	}
 
 }

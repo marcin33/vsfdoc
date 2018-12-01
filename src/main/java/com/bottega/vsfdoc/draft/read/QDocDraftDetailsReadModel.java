@@ -1,6 +1,5 @@
 package com.bottega.vsfdoc.draft.read;
 
-import com.bottega.vsfdoc.shared.identifiers.QDocId;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,12 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Entity
-@Table(name = "qdoc_draft")
+//@Entity
+//@Table(name = "qdoc_draft")
 public class QDocDraftDetailsReadModel {
 
 	@Id
-	private QDocId qDocId;
+	private UUID qDocId;
 	private String state;
 	private String content;
 	private String number;
@@ -31,8 +30,9 @@ public class QDocDraftDetailsReadModel {
 	}
 
 	@Data
-	@Entity
+//	@Entity
 	class UserReadMode {
+		@Id
 		UUID id;
 		@Transient
 		String name;

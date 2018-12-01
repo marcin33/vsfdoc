@@ -50,7 +50,7 @@ class QDocDraft {
 	DomainEvent updateContent(QDocValidator validator, String content) {
 		validator.state(QDocState.NEW)
 				.notBlankContent(content)
-				.validate();
+				.validate(this);
 
 		return new QDocContentWasUpdated(qDocId, content);
 	}
@@ -58,7 +58,7 @@ class QDocDraft {
 	DomainEvent assignToVerifier(QDocValidator validator, VerifierId verifierId) {
 		validator.state(QDocState.NEW)
 				.ownerIsNotVerifier(verifierId)
-				.validate();
+				.validate(this);
 
 		return new QDocWasAssignToVerifier(qDocId, verifierId);
 	}
@@ -66,7 +66,7 @@ class QDocDraft {
 	DomainEvent setDepartments(QDocValidator validator, List<DepartmentId> departmentIds) {
 		validator.state(QDocState.NEW)
 				.departmentIdsNotEmpty(departmentIds)
-				.validate();
+				.validate(this);
 
 		return new QDocDepartmentsWereSet(qDocId, departmentIds);
 	}
@@ -76,14 +76,14 @@ class QDocDraft {
 				.notBlankContent(content)
 				.departmentsNotEmpty()
 				.verifierNotEmpty()
-				.validate();
+				.validate(this);
 
 		return new QDocWasSendToVerification(qDocId, QDocState.IN_VERIFICATION.name());
 	}
 
 	DomainEvent verify(QDocValidator validator) {
 		validator.state(QDocState.IN_VERIFICATION)
-				.validate();
+				.validate(this);
 
 		return new QDocWasVerified(qDocId, QDocState.VERIFIED.name());
 	}
@@ -91,14 +91,14 @@ class QDocDraft {
 	DomainEvent decline(QDocValidator validator, String declineNote) {
 		validator.state(QDocState.IN_VERIFICATION)
 				.notBlankDeclineNote(declineNote)
-				.validate();
+				.validate(this);
 
 		return new QDocWasDecline(qDocId, declineNote, QDocState.NEW.name());
 	}
 
 	DomainEvent publish(QDocValidator validator) {
 		validator.state(QDocState.VERIFIED)
-				.validate();
+				.validate(this);
 
 		return new QDocWasPublished(qDocId, QDocState.PUBLISHED.name());
 	}

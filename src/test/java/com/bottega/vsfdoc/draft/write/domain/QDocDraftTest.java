@@ -44,7 +44,7 @@ public class QDocDraftTest {
 		// given
 		QDocDraft qDocDraft = create(QDocWasCreated);
 		String newContent = "new content";
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.updateContent(validator, newContent);
@@ -58,7 +58,7 @@ public class QDocDraftTest {
 		// given
 		QDocDraft qDocDraft = create(QDocWasCreated);
 		VerifierId verifierId = VerifierId.of(UUID.randomUUID());
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.assignToVerifier(validator, verifierId);
@@ -71,7 +71,7 @@ public class QDocDraftTest {
 	public void shouldSetDepartments() {
 		// given
 		QDocDraft qDocDraft = create(QDocWasCreated);
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.setDepartments(validator, DEPARTMENT_IDS);
@@ -88,7 +88,7 @@ public class QDocDraftTest {
 				new QDocContentWasUpdated(Q_DOC_ID, "new content"),
 				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS));
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.sendToVerification(validator);
@@ -106,7 +106,7 @@ public class QDocDraftTest {
 				new QDocWasAssignToVerifier(Q_DOC_ID, VerifierId.of(UUID.randomUUID())),
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
 				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.verify(validator);
@@ -125,7 +125,7 @@ public class QDocDraftTest {
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
 				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()));
 		String declineNote = "decline note";
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.decline(validator, declineNote);
@@ -144,7 +144,7 @@ public class QDocDraftTest {
 				new QDocDepartmentsWereSet(Q_DOC_ID, DEPARTMENT_IDS),
 				new QDocWasSendToVerification(Q_DOC_ID, QDocState.IN_VERIFICATION.name()),
 				new QDocWasVerified(Q_DOC_ID, QDocState.VERIFIED.name()));
-		QDocValidator validator = new QDocValidator(qDocDraft);
+		QDocValidator validator = new QDocValidator();
 
 		// when
 		DomainEvent event = qDocDraft.publish(validator);

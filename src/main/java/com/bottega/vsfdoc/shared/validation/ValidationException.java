@@ -1,6 +1,5 @@
 package com.bottega.vsfdoc.shared.validation;
 
-import com.bottega.vsfdoc.shared.ValidationViolations;
 import lombok.Value;
 
 import java.util.UUID;

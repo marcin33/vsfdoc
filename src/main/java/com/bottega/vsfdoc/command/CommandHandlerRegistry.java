@@ -1,11 +1,13 @@
 package com.bottega.vsfdoc.command;
 
 import com.bottega.vsfdoc.shared.command.Command;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Component
 public class CommandHandlerRegistry {
 
 	private final Map<Class<?>, CommandHandler> handlers = new HashMap<>();

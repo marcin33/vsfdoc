@@ -2,17 +2,6 @@ package com.bottega.vsfdoc.draft.write.domain;
 
 enum QDocState {
 
-	NEW, IN_VERIFICATION, VERIFIED, PUBLISHED;
+	NEW, IN_VERIFICATION, VERIFIED, PUBLISHED
 
-	public boolean isNew() {
-		return this.equals(NEW);
-	}
-
-	public boolean isInVerification() {
-		return this.equals(IN_VERIFICATION);
-	}
-
-	public boolean isVerified() {
-		return this.equals(VERIFIED);
-	}
 }

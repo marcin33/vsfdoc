@@ -11,7 +11,6 @@ public class QDocNumberTest {
 
 	@Test
 	public void should_generate_number() {
-
 		QDocNumber qDocNumber = new QDocNumber(SystemType.ISO, true, true, LocalDate.of(2018, 11, 11), 123L);
 
 		assertThat(qDocNumber.getValue()).isEqualTo("DEMO/ISO/123/11/2018/AUDIT");

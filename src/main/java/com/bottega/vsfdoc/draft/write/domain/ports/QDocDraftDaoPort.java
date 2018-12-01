@@ -1,11 +1,14 @@
 package com.bottega.vsfdoc.draft.write.domain.ports;
 
-import com.bottega.vsfdoc.shared.identifiers.QDocId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface QDocDraftDaoPort {
-	Optional<QDocDraftRecord> findById(QDocId id);
+@Repository
+public interface QDocDraftDaoPort extends JpaRepository<QDocDraftRecord, UUID> {
 
-	void save(QDocDraftRecord record);
+	Optional<QDocDraftRecord> findById(UUID id);
+
 }
